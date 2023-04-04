@@ -1,9 +1,10 @@
-from typing import Optional
+from typing import Optional, Field
 
 from pydantic import BaseModel
 
 from fastapi import FastAPI
 from fastapi import Body, Query, Path
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -13,8 +14,14 @@ class Person(BaseModel):
     first_name: str
     last_name: str
     age: int
-    hair_color: Optional[str] = None
+    hair_color: Field(default="Black", min_lenght=2 ,max_lenght=6)
     is_married: Optional[bool] = None
+
+    class Config:
+        schema_extra = {
+            'id': 1,
+            'title': 'Missing title',
+        }
 
 app.title  = 'App with FastAPI'
 
@@ -35,7 +42,7 @@ def show_client(
     name: Optional[str] = Query(None, min_length=1, max_length=50),
     age: str = Query(...)  
 ):
-    return {name: age}
+    return JSONResponse(content={name: age}) 
 
 # Validaciones path parameters
 @app.get('/person/detail/{person_id}')
