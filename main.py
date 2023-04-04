@@ -37,12 +37,12 @@ def create_client(person: Person = Body(...)):
     return person
 
 # Validations query params
-@app.get('/person/detail')
+@app.get('/person/detail', response_model=dict,  status_code=200)
 def show_client(
     name: Optional[str] = Query(None, min_length=1, max_length=50),
     age: str = Query(...)  
 ):
-    return JSONResponse(content={name: age}) 
+    return JSONResponse(status_code=200, content={name: age}) 
 
 # Validaciones path parameters
 @app.get('/person/detail/{person_id}')
