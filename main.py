@@ -11,7 +11,7 @@ app.version = "0.0.1"
 
 class JWTBearer(HTTPBearer):
      async def __call__(self, request):
-        auth = await super().__call__(request)
+        auth = await super().__call__(request) 
         data = validate_token(auth.credentials)
         if data['email'] != 'root@toor.com':
             raise HTTPException(status_code=403, detail='Invalid credentials')
@@ -62,7 +62,6 @@ movies = [
 @app.get('/', tags=['home'])
 def message():
     return HTMLResponse('<h1>Hello world</h1>')
-
 
 @app.post('/login', tags=['auth'])
 def login(user: User):
